@@ -16,22 +16,24 @@ import com.clj.fastble.data.BleDevice;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//设备适配器
 public class DeviceAdapter extends BaseAdapter {
-
+    //保存context
     private Context context;
+    //保存蓝牙设备的list
     private List<BleDevice> bleDeviceList;
 
+    //构造函数
     public DeviceAdapter(Context context) {
         this.context = context;
         bleDeviceList = new ArrayList<>();
     }
-
+    //添加设备
     public void addDevice(BleDevice bleDevice) {
         removeDevice(bleDevice);
         bleDeviceList.add(bleDevice);
     }
-
+    //移除设备
     public void removeDevice(BleDevice bleDevice) {
         for (int i = 0; i < bleDeviceList.size(); i++) {
             BleDevice device = bleDeviceList.get(i);
@@ -40,7 +42,7 @@ public class DeviceAdapter extends BaseAdapter {
             }
         }
     }
-
+    //清空连接的设备
     public void clearConnectedDevice() {
         for (int i = 0; i < bleDeviceList.size(); i++) {
             BleDevice device = bleDeviceList.get(i);
@@ -49,7 +51,7 @@ public class DeviceAdapter extends BaseAdapter {
             }
         }
     }
-
+    //清空扫描的设备
     public void clearScanDevice() {
         for (int i = 0; i < bleDeviceList.size(); i++) {
             BleDevice device = bleDeviceList.get(i);
@@ -58,32 +60,35 @@ public class DeviceAdapter extends BaseAdapter {
             }
         }
     }
-
+    //清空扫描,连接的设备
     public void clear() {
         clearConnectedDevice();
         clearScanDevice();
     }
 
+    //获取计数
     @Override
     public int getCount() {
         return bleDeviceList.size();
     }
-
+    //获取item
     @Override
     public BleDevice getItem(int position) {
         if (position > bleDeviceList.size())
             return null;
         return bleDeviceList.get(position);
     }
-
+    //获取item id
     @Override
     public long getItemId(int position) {
         return 0;
     }
-
+    //获取view
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        //view holder
         ViewHolder holder;
+
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {

@@ -21,8 +21,10 @@ import com.clj.fastble.data.BleDevice;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//服务列表activity
+//api版本兼容相关
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+//TODO:Fragment
 public class ServiceListFragment extends Fragment {
 
     private TextView txt_name, txt_mac;
@@ -42,7 +44,9 @@ public class ServiceListFragment extends Fragment {
 
         mResultAdapter = new ResultAdapter(getActivity());
         ListView listView_device = (ListView) v.findViewById(R.id.list_service);
+        //设置adapter
         listView_device.setAdapter(mResultAdapter);
+        //item listener
         listView_device.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -52,58 +56,59 @@ public class ServiceListFragment extends Fragment {
             }
         });
     }
-
+    //显示数据
     private void showData() {
-        BleDevice bleDevice = ((OperationActivity) getActivity()).getBleDevice();
-        String name = bleDevice.getName();
-        String mac = bleDevice.getMac();
-        BluetoothGatt gatt = BleManager.getInstance().getBluetoothGatt(bleDevice);
-
+        //获取gatt对象
+        BleDevice bleDevice = ((OperationActivity) getActivity()).getBleDevice();//获取ble设备
+        String name = bleDevice.getName();//获取名字
+        String mac = bleDevice.getMac();//获取mac
+        BluetoothGatt gatt = BleManager.getInstance().getBluetoothGatt(bleDevice);//获取该名字和mac的gatt对象
+        //显示名字和mac
         txt_name.setText(String.valueOf(getActivity().getString(R.string.name) + name));
         txt_mac.setText(String.valueOf(getActivity().getString(R.string.mac) + mac));
-
+        //TODO:这个不知道干嘛的
         mResultAdapter.clear();
         for (BluetoothGattService service : gatt.getServices()) {
             mResultAdapter.addResult(service);
         }
         mResultAdapter.notifyDataSetChanged();
     }
-
+    //结果适配器
     private class ResultAdapter extends BaseAdapter {
-
+        //属性
         private Context context;
         private List<BluetoothGattService> bluetoothGattServices;
-
+        //构造方法
         ResultAdapter(Context context) {
             this.context = context;
             bluetoothGattServices = new ArrayList<>();
         }
-
+        //添加结果
         void addResult(BluetoothGattService service) {
             bluetoothGattServices.add(service);
         }
-
+        //清空
         void clear() {
             bluetoothGattServices.clear();
         }
-
+        //获取计数
         @Override
         public int getCount() {
             return bluetoothGattServices.size();
         }
-
+        //获取bluetoothGattServices[]
         @Override
         public BluetoothGattService getItem(int position) {
             if (position > bluetoothGattServices.size())
                 return null;
             return bluetoothGattServices.get(position);
         }
-
+        //获取item id(直接返回0)
         @Override
         public long getItemId(int position) {
             return 0;
         }
-
+        //TODO:获取view (学习adapter相关)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;

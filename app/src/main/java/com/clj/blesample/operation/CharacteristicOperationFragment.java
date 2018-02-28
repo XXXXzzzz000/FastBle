@@ -30,31 +30,39 @@ import java.util.List;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class CharacteristicOperationFragment extends Fragment {
-
+    //属性权限定义
     public static final int PROPERTY_READ = 1;
     public static final int PROPERTY_WRITE = 2;
     public static final int PROPERTY_WRITE_NO_RESPONSE = 3;
     public static final int PROPERTY_NOTIFY = 4;
     public static final int PROPERTY_INDICATE = 5;
-
+    //线性布局 字符串数组
     private LinearLayout layout_container;
     private List<String> childList = new ArrayList<>();
 
+    //TODO:创建view
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //TODO:
         View v = inflater.inflate(R.layout.fragment_characteric_operation, null);
+        //初始化view
         initView(v);
         return v;
     }
-
+    //初始化view
     private void initView(View v) {
+        //TODO:
         layout_container = (LinearLayout) v.findViewById(R.id.layout_container);
     }
-
+    //显示数据
     public void showData() {
+        //TODO:获取ble设备
         final BleDevice bleDevice = ((OperationActivity) getActivity()).getBleDevice();
+        //TODO:获取ble特征
         final BluetoothGattCharacteristic characteristic = ((OperationActivity) getActivity()).getCharacteristic();
+        //TODO:获取ble特征权限
         final int charaProp = ((OperationActivity) getActivity()).getCharaProp();
+
         String child = characteristic.getUuid().toString() + String.valueOf(charaProp);
 
         for (int i = 0; i < layout_container.getChildCount(); i++) {

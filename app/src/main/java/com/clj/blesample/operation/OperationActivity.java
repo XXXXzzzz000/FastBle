@@ -39,27 +39,29 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_operation);
+        //初始化
         initData();
         initView();
         initPage();
-
+        //TODO:
         ObserverManager.getInstance().addObserver(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //清除特征回调
         BleManager.getInstance().clearCharacterCallback(bleDevice);
         ObserverManager.getInstance().deleteObserver(this);
     }
-
+    //断开连接
     @Override
     public void disConnected(BleDevice device) {
         if (device != null && bleDevice != null && device.getKey().equals(bleDevice.getKey())) {
             finish();
         }
     }
-
+    //按键按下
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -74,7 +76,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         }
         return super.onKeyDown(keyCode, event);
     }
-
+    //初始化view
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(titles[0]);
@@ -92,7 +94,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
             }
         });
     }
-
+    //初始化数据
     private void initData() {
         bleDevice = getIntent().getParcelableExtra(KEY_DATA);
         if (bleDevice == null)
@@ -103,12 +105,12 @@ public class OperationActivity extends AppCompatActivity implements Observer {
                 getString(R.string.characteristic_list),
                 getString(R.string.console)};
     }
-
+    //初始化页
     private void initPage() {
         prepareFragment();
         changePage(0);
     }
-
+    //改变页
     public void changePage(int page) {
         currentPage = page;
         toolbar.setTitle(titles[page]);
@@ -119,7 +121,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
             ((CharacteristicOperationFragment) fragments.get(2)).showData();
         }
     }
-
+    //准备
     private void prepareFragment() {
         fragments.add(new ServiceListFragment());
         fragments.add(new CharacteristicListFragment());
@@ -144,31 +146,31 @@ public class OperationActivity extends AppCompatActivity implements Observer {
             transaction.commit();
         }
     }
-
+    //获取ble device
     public BleDevice getBleDevice() {
         return bleDevice;
     }
-
+    //获取ble gatt service
     public BluetoothGattService getBluetoothGattService() {
         return bluetoothGattService;
     }
-
+    //设置ble gatt service
     public void setBluetoothGattService(BluetoothGattService bluetoothGattService) {
         this.bluetoothGattService = bluetoothGattService;
     }
-
+    //获取特征
     public BluetoothGattCharacteristic getCharacteristic() {
         return characteristic;
     }
-
+    //设置特征
     public void setCharacteristic(BluetoothGattCharacteristic characteristic) {
         this.characteristic = characteristic;
     }
-
+    //获取特征权限
     public int getCharaProp() {
         return charaProp;
     }
-
+    //设置特征权限
     public void setCharaProp(int charaProp) {
         this.charaProp = charaProp;
     }

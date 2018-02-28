@@ -5,7 +5,7 @@ import com.clj.fastble.data.BleDevice;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO:Observable <https://developer.android.com/reference/java/util/Observable.html>
 public class ObserverManager implements Observable {
 
     public static ObserverManager getInstance() {
